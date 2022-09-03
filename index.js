@@ -33,17 +33,21 @@ function playRound(playerSelection, computerSelection) {
             return 'You Won!'
         }
     }
-    return 'Invalid input';
+    return 'Invalid input! Try again';
 }
 
 function game() {
     const results = [];
-    for(let i = 0; i < 5; i++) {
+    let round = 0;
+    while(round < 5) {
         const playerSelection = prompt("What is your choise?");
         const computerSelection = computerPlay();
         const result = playRound(playerSelection.toLowerCase(), computerSelection);
         console.log("result", result);
-        results.push(result)
+        if (result !== 'Invalid input! Try again') {
+            round++;
+            results.push(result)
+        }
     }
     return results;
 }
