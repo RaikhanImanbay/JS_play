@@ -1,33 +1,45 @@
-const ROCK = 'rock';
-const SCISSORS = 'scissors';
-const PAPER = 'paper';
+const ROCK = "Rock";
+const SCISSORS = "Scissors";
+const PAPER = "Paper";
+let PL_COUNTER = 0;
+let CP_COUNTER = 0;
+
+function play(playerSelection) {
+    document.getElementById('total-result').innerHTML = "";
+    document.getElementById('player-select').innerHTML = playerSelection;
+    const computerSelection = computerPlay();
+    document.getElementById('computer-select').innerHTML = computerSelection;
+    const result = playRound(playerSelection, computerSelection);
+    document.getElementById('result').innerHTML = result;
+    determineWinner(result);
+}
 
 function computerPlay() {
     const moves = [ROCK, PAPER, SCISSORS];
-    const randomMove = moves[Math.floor(Math.random()*moves.length)];
+    const randomMove = moves[Math.floor(Math.random() * moves.length)];
     return randomMove;
 }
 
 function playRound(playerSelection, computerSelection) {
-    if(playerSelection === computerSelection){
+    if (playerSelection === computerSelection) {
         return 'Tie'
-    } 
-    else if(playerSelection === ROCK) {
-        if(computerSelection === PAPER) {
+    }
+    else if (playerSelection === ROCK) {
+        if (computerSelection === PAPER) {
             return 'You Lose! Paper beats Rock.'
-        } else{
+        } else {
             return 'You Won!'
         }
     }
-    else if(playerSelection === SCISSORS) {
-        if(computerSelection === ROCK) {
+    else if (playerSelection === SCISSORS) {
+        if (computerSelection === ROCK) {
             return 'You Lose! Rock beats Scissors.'
         } else {
             return 'You Won!'
         }
     }
-    else if(playerSelection === PAPER) {
-        if(computerSelection === SCISSORS) {
+    else if (playerSelection === PAPER) {
+        if (computerSelection === SCISSORS) {
             return 'You Lose! Scissors beat Paper'
         } else {
             return 'You Won!'
@@ -36,20 +48,18 @@ function playRound(playerSelection, computerSelection) {
     return 'Invalid input! Try again';
 }
 
-function game() {
-    const results = [];
-    let round = 0;
-    while(round < 5) {
-        const playerSelection = prompt("What is your choise?");
-        const computerSelection = computerPlay();
-        const result = playRound(playerSelection.toLowerCase(), computerSelection);
-        console.log("result", result);
-        if (result !== 'Invalid input! Try again') {
-            round++;
-            results.push(result)
-        }
+function determineWinner(result) {
+    if (result === 'You Won!') {
+        PL_COUNTER++;
+    } else if (result.startsWith('You Lose!')) {
+        CP_COUNTER++;
     }
-    return results;
+    if (PL_COUNTER === 5 || CP_COUNTER === 5) {
+        document.getElementById('total-result').innerHTML =
+            PL_COUNTER > CP_COUNTER
+                ? 'YOU WON!'
+                : 'YOU LOST!';
+        PL_COUNTER = 0;
+        CP_COUNTER = 0;
+    }
 }
-
-game();
